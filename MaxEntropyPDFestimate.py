@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
     mlist = [4]  # order of the PDF approximation - extend later for multi-m search conform (Inverardi and Tagliani, 2013)
 
-    samples_rAlpha = 10 ** 3  # number of LHS samples Alpha - PHASE ONE - fixed Alpha values
+    samples_rAlpha = 10 ** 2  # number of LHS samples Alpha - PHASE ONE - fixed Alpha values
 
     number_best_phase2 = 50  # number of best values considered for PHASE TWO
     number_best_phase3 = 10  # number of best values considered for PHASE THREE
