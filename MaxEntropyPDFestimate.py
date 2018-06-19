@@ -44,7 +44,7 @@ if __name__ == "__main__":
     ### CONTROLS ###
     ################
 
-    nProc = 1 # number of processors
+    nProc = 3 # number of processors
 
     mlist = [4]  # order of the PDF approximation - extend later for multi-m search conform (Inverardi and Tagliani, 2013)
 
