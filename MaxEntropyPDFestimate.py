@@ -8,6 +8,7 @@ from PhaseThree import *
 from PhaseFour import *
 from phase_five import *
 from GaussWeightsAndPoints import *
+import time
 
 ### NOTE ###
 ############
@@ -25,6 +26,8 @@ the range of the distribution should (mostly) be clearly above 1. If this is not
 # for example: calculation in m =>  calculation in mm
 
 if __name__ == "__main__":
+
+    time_start = time.time()
 
     """ ################################################################################## """
     """ ############################ INPUT SECTION ####################################### """
@@ -167,6 +170,8 @@ if __name__ == "__main__":
         # read PhaseThree_final results for all m in mlist => determine reduced set of optimum overall simulations
 
         PhaseFive(mlist, number_best_phase5)
+
+        print("Finished in %s min" % (time.time()-time_start)/60)
 
     else:
 
