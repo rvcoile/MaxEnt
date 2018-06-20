@@ -24,10 +24,9 @@ def z_optimization(Lambda, random_field_eval, alpha_list_for_z, W, x_max_default
 
 
 def wrapper_queue(arg):
-    # kwargs, q = arg
-    kwargs = arg
+    kwargs, q = arg
     result = fmin(z_optimization, **kwargs)
-    # q.put(kwargs)
+    q.put(kwargs)
     return result
 
 
@@ -109,20 +108,18 @@ def phase_one(m, samples_r_alpha, random_field_eval, W, x_max_default, n_proc):
     # Calculation main body
     # ---------------------
 
-    # m_ = mp.Manager()
+    m_ = mp.Manager()
     p = mp.Pool(n_proc)
-    # q = m_.Queue()
-    # jobs = p.map_async(wrapper_queue, [(kwargs, q) for kwargs in list_kwargs])
-    jobs = p.map_async(wrapper_queue, [(kwargs) for kwargs in list_kwargs])
-
+    q = m_.Queue()
+    jobs = p.map_async(wrapper_queue, [(kwargs, q) for kwargs in list_kwargs])
     time_start = time.time()
     while True:
         if jobs.ready():
             print("Simulation completed in {} min.".format(str((time.time()-time_start)/60)))
             break
-        # else:
-        #     print("{:25}{:<10.3f}{:10}".format("Simulation progress", q.qsize() * 100 / n_iteration, "%"))
-        #     time.sleep(5)
+        else:
+            print("{:25}{:<10.3f}{:10}".format("Simulation progress", q.qsize() * 100 / n_iteration, "%"))
+            time.sleep(5)
     p.close()
     p.join()
     j = jobs.get()

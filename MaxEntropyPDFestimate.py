@@ -27,11 +27,11 @@ the range of the distribution should (mostly) be clearly above 1. If this is not
 
 if __name__ == "__main__":
 
-    time_start = time.time()
-
     """ ################################################################################## """
     """ ############################ INPUT SECTION ####################################### """
     """ ################################################################################## """
+
+    start_time=time.time()
 
     ################
     ### SWITCHES ###
@@ -47,11 +47,11 @@ if __name__ == "__main__":
     ### CONTROLS ###
     ################
 
-    nProc = 3 # number of processors
+    nProc = 2 # number of processors
 
     mlist = [4]  # order of the PDF approximation - extend later for multi-m search conform (Inverardi and Tagliani, 2013)
 
-    samples_rAlpha = 10 ** 2  # number of LHS samples Alpha - PHASE ONE - fixed Alpha values
+    samples_rAlpha = 10 ** 3  # number of LHS samples Alpha - PHASE ONE - fixed Alpha values
 
     number_best_phase2 = 50  # number of best values considered for PHASE TWO
     number_best_phase3 = 10  # number of best values considered for PHASE THREE
@@ -171,7 +171,7 @@ if __name__ == "__main__":
 
         PhaseFive(mlist, number_best_phase5)
 
-        print("Finished in %s min" % (time.time()-time_start)/60)
+        print("finalized in %s min" % ((time.time()-start_time)/60))
 
     else:
 
