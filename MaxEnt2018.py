@@ -14,6 +14,7 @@ from PhaseThree import *
 from PhaseFour import *
 from phase_five import *
 from GaussWeightsAndPoints import *
+from UserInput import UserInput
 import time
 
 ### NOTE ###
@@ -39,7 +40,7 @@ if __name__ == "__main__":
 
     SW_Debug = True  # OMIT standard application and DO SPECIAL REQUEST at end of the file
 
-    SW_Gaussian = True  # function realizations Y(X) are based on Quadrature points for X... -- make sure to adapt filename etc accordingly
+    SW_Gaussian = False  # function realizations Y(X) are based on Quadrature points for X... -- make sure to adapt filename etc accordingly
 
     ################
     ### CONTROLS ###
@@ -65,13 +66,15 @@ if __name__ == "__main__":
     ###  DATA READING ###
     #####################
 
-    filename = 'Test_LN_3Var_Gauss5.xlsx'
 
     """ ################################################################################## """
     """ ###################### USER INPUT & CONFIRMATION ################################# """
     """ ################################################################################## """
 
-
+    ## Overview of default values and possibility of user correction ##
+    # filename = 'Test_LN_3Var_Gauss5.xlsx' # can be used when deactivating UserInput
+    SW_Gaussian,nProc,mList,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint,filename=UserInput(SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint)
+    
 
     """ ################################################################################## """
     """ ###################### STANDARD CALCULATION CORE ################################# """
@@ -189,6 +192,12 @@ if __name__ == "__main__":
         """ only executed if SW_Debug=False """
 
         print("\n## Debug zone ##\n")
+
+        print(SW_Gaussian)
+        print(nProc)
+        print(mList)
+        print(samples_rAlpha)
+        print(xmax_default)
 
         # print(RandomField_Eval)
 
