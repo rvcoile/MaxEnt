@@ -84,10 +84,10 @@ if __name__ == "__main__":
     ### CALCULATION CENTER  ###
     ###########################
 
-    RandomField_Eval = pd.read_excel('Samples\\' + filename, 'DATA')
+    RandomField_Eval = pd.read_excel(filename, 'DATA')
     if SW_Gaussian:
         W = GaussWeighting(RandomField_Eval)
-        tmp = pd.read_excel('Samples\\' + filename, 'MeanPointGauss')
+        tmp = pd.read_excel(filename, 'MeanPointGauss')
         RandomField_Eval = RandomField_Eval.append(tmp)
     else:
         W = 0
