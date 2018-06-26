@@ -7,7 +7,8 @@ import numpy as np
 def UserInput(SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint):
 
     # filename
-    filename=input("\nPlease provide path to input file (*.xlsx).\nSheet with data to be listed as 'DATA'")
+    filename=input("\nPlease provide path to input file (*.xlsx).\nSheet with data to be listed as 'DATA':")
+    filename=filename[1:-1] # strips quotes from path
     
     # SW_Gaussian - SW_Debug and SW_Testing for developer only
     if SW_Gaussian: 
