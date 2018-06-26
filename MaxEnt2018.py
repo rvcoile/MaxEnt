@@ -4,8 +4,8 @@
 
 
 # reference versions
-# 2015-07-09: full version Python 2.7
-# spring 2018: Ian.Fu@olssonfire.com and Danny.Hopkin@olssonfire.com: transfer to Python 3.6 + multiprocessing capability
+# 2015-07-09: full version Python 2.7: MaxEntropyPDFestimate.py
+# spring 2018: Ian.Fu@olssonfire.com and Danny.Hopkin@olssonfire.com: transfer to Python 3.6 + multiprocessing capability: MaxEntropyPDFestimate.py
 # current version: reconceptualization (samples in referenced directories + saving of output)
 
 from phase_one import *
@@ -25,6 +25,7 @@ if __name__ == "__main__":
     # if __name__ ... # requirement for parallel computing capability
 
     start_time=time.time()
+    print("\nStarting MaxEnt.py\n## All user input must conform with syntax requirements ##\n")
 
     """ ################################################################################## """
     """ ############################ INPUT SECTION ####################################### """
@@ -36,7 +37,7 @@ if __name__ == "__main__":
 
     SW_Testing = False  # indicate if test calculation or not -- if SW_Testing == True, the Kullback - Leibler divergence will be calculated
 
-    SW_Debug = False  # OMIT standard application and DO SPECIAL REQUEST at end of the file
+    SW_Debug = True  # OMIT standard application and DO SPECIAL REQUEST at end of the file
 
     SW_Gaussian = True  # function realizations Y(X) are based on Quadrature points for X... -- make sure to adapt filename etc accordingly
 
@@ -55,16 +56,22 @@ if __name__ == "__main__":
     number_best_phase5 = 5  # number of best values considered for PHASE FIVE (i.e. considering m/N)
 
     """ TAKE NOTE TAKE NOTE TAKE NOTE """
-    xmax_default = 100.  # # extremely import variable if you move away from the LN testcase
+    xmax_default = 1000.  # # extremely import variable if you move away from the LN testcase
 
-    xmax_printing = 50.  # range for calc CDF and PDF -- make sure this is a float!!!!
-    x_deltaprint = 0.2
+    xmax_printing = 500.  # range for calc CDF and PDF -- make sure this is a float!!!!
+    x_deltaprint = 1.0
 
     #####################
     ###  DATA READING ###
     #####################
 
-    filename = 'Aakash_tensile_01.xlsx'
+    filename = 'Test_LN_3Var_Gauss5.xlsx'
+
+    """ ################################################################################## """
+    """ ###################### USER INPUT & CONFIRMATION ################################# """
+    """ ################################################################################## """
+
+
 
     """ ################################################################################## """
     """ ###################### STANDARD CALCULATION CORE ################################# """
@@ -181,18 +188,20 @@ if __name__ == "__main__":
         #################################
         """ only executed if SW_Debug=False """
 
-        print(RandomField_Eval)
+        print("\n## Debug zone ##\n")
 
-        print()
+        # print(RandomField_Eval)
 
-        print(W)
+        # print()
 
-        Print_DataFrame([W], 'Wtmp', ['result'])
+        # print(W)
 
-        print()
+        # Print_DataFrame([W], 'Wtmp', ['result'])
 
-        print(fraction_moment(0.3, RandomField_Eval, W))
+        # print()
 
-        Points = GaussPoints(17)
+        # print(fraction_moment(0.3, RandomField_Eval, W))
 
-        Print_DataFrame([Points], 'Ztmp', ['result'])
+        # Points = GaussPoints(17)
+
+        # Print_DataFrame([Points], 'Ztmp', ['result'])

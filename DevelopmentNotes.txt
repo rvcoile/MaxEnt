@@ -1,0 +1,11 @@
+MC or LHS input sample points of LN-distribution have been moved to separate file 'InputForTesting.py'
+
+big difference with V3 => updated search algorithm for minimization based on fixed (random realization of) alpha
+
+TO DO: beter alpha als tuple doorsturen naar Z etc. Huidige werkwijze is bullshit 
+
+Of IDEE: doorsturen raw data etc. naar Entropy_Auxiliary en daarin dan "veilig" de alpha's en fractional moments constant !!!
+
+
+
+# for example: calculation in m =>  calculation in mm
