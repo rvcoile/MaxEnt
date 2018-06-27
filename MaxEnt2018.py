@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     ## Overview of default values and possibility of user correction ##
     # filename = 'Test_LN_3Var_Gauss5.xlsx' # can be used when deactivating UserInput
-    SW_Gaussian,nProc,mList,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint,filename,sheet=UserInput(SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint)
+    SW_Gaussian,nProc,mList,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint,filename,sheet,targetfolder=UserInput(SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint)
     
 
     """ ################################################################################## """
@@ -96,9 +96,15 @@ if __name__ == "__main__":
         #################
         ###  CLEANING ###
         #################
-
-        RemoveFolderData('CDF_PDF')
-        RemoveFolderData('PhaseResults')
+        
+        # create sub-folder if non-existent
+        # remove possible old calculation results
+        sub01='\\CDF_PDF'
+        sub02='\\PhaseResults'
+        subList=[sub01,sub02]
+        for sub in subList
+            if not os.path.exists(folder+sub): os.makedirs(folder+sub)
+            else: RemoveFolderData(targetfolder+sub)
 
         for m in mlist:
 

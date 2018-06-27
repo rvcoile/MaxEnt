@@ -13,6 +13,12 @@ def UserInput(SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,
     # sheet Excel file with data
     print("\n## Simulation results in worksheet 'DATA'. Note required layout. ##")
     u=input("Press ENTER to confirm, or provide name of worksheet: ")
+    if u!='': targetfolder=u; print("\nMaxEnt output will be saved in ", targetfolder)
+    else: targetfolder=''
+
+    # target folder
+    print("\n## MaxEnt results will be saved in local worker directory. ##")
+    u=input("Press ENTER to confirm, or provide path to alternative directory: ")
     if u!='': sheet=u;
     else: sheet='DATA'
     print("\nWorksheet set to ", sheet)
@@ -55,4 +61,4 @@ def UserInput(SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,
         u=input("dDelta_x for PDF printing: delta_x = "); x_deltaprint=float(u)
         print("\nPDF output will be printed according to 0. : %d : %d]" % (x_deltaprint,xmax_printing))
 
-    return SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint,filename,sheet
+    return SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint,filename,sheet,targetfolder
