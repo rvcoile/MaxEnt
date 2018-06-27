@@ -15,6 +15,8 @@ from PhaseFour import *
 from phase_five import *
 from GaussWeightsAndPoints import *
 from UserInput import UserInput
+from LocalAuxiliary import ReadDatapoints
+from PrintAuxiliary import Print_DataFrame
 import time
 
 ### NOTE ###
@@ -41,6 +43,8 @@ if __name__ == "__main__":
     SW_Debug = False  # OMIT standard application and DO SPECIAL REQUEST at end of the file
 
     SW_Gaussian = False  # function realizations Y(X) are based on Quadrature points for X... -- make sure to adapt filename etc accordingly
+
+    SW_oldInputSyntax = False # old input syntax for Gauss datapoints
 
     ################
     ### CONTROLS ###
@@ -73,7 +77,7 @@ if __name__ == "__main__":
 
     ## Overview of default values and possibility of user correction ##
     # filename = 'Test_LN_3Var_Gauss5.xlsx' # can be used when deactivating UserInput
-    SW_Gaussian,nProc,mList,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint,filename=UserInput(SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint)
+    SW_Gaussian,nProc,mList,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint,filename,sheet=UserInput(SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint)
     
 
     """ ################################################################################## """
@@ -84,13 +88,8 @@ if __name__ == "__main__":
     ### CALCULATION CENTER  ###
     ###########################
 
-    RandomField_Eval = pd.read_excel(filename, 'DATA')
-    if SW_Gaussian:
-        W = GaussWeighting(RandomField_Eval)
-        tmp = pd.read_excel(filename, 'MeanPointGauss')
-        RandomField_Eval = RandomField_Eval.append(tmp)
-    else:
-        W = 0
+    # read and format datapoints + provide Gauss weights as appropriate
+    W,RandomField_Eval=ReadDatapoints(SW_Gaussian,SW_oldInputSyntax,filename,sheet)
 
     if SW_Debug == False:
 
@@ -193,19 +192,9 @@ if __name__ == "__main__":
 
         print("\n## Debug zone ##\n")
 
-        print(SW_Gaussian)
-        print(nProc)
-        print(mList)
-        print(samples_rAlpha)
-        print(xmax_default)
+        print(RandomField_Eval)
 
-        # print(RandomField_Eval)
-
-        # print()
-
-        # print(W)
-
-        # Print_DataFrame([W], 'Wtmp', ['result'])
+        Print_DataFrame([RandomField_Eval], 'Ref02', ['GaussSyntax'])
 
         # print()
 

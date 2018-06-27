@@ -4,6 +4,7 @@
 
 import numpy as np
 import pandas as pd
+from GaussWeightsAndPoints import GaussWeighting
 
 
 ###########################
@@ -66,6 +67,29 @@ def ReduceSet(m, value, Lambda, Alpha, number_best, simnumberlist):
         n = n + 1
 
     return Best
+
+def ReadDatapoints(SW_Gaussian,SW_oldInputSyntax,filename,sheet):
+
+    # provide input read for old syntax to allow for continued use old datasets
+    if SW_oldInputSyntax:
+        RandomField_Eval = pd.read_excel(filename, 'DATA')
+        if SW_Gaussian:
+            W = GaussWeighting(RandomField_Eval)
+            tmp = pd.read_excel(filename, 'MeanPointGauss')
+            RandomField_Eval = RandomField_Eval.append(tmp)
+        else:
+            W = 0
+
+    else: # standard code for reading datapoints
+        RawData=pd.read_excel(filename, sheet) # formatting as pd.DataFrame: numerbering of realizations in column 1, realization values in single column with header (=> cel A1 empty)
+        # can be further modified as dataframe with yjl, j, l => free ordering of input data => in this case the number of Gauss points can also be more flexible
+        if not SW_Gaussian:
+            W=0 #  Gauss weights zero, cfr. MCS input
+            RandomField_Eval=pd.DataFrame(RawData.values,columns=['X'],index=RawData.index)
+        else:
+            pass
+
+    return W, RandomField_Eval
 
 
 #########################

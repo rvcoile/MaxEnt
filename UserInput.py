@@ -7,9 +7,16 @@ import numpy as np
 def UserInput(SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint):
 
     # filename
-    filename=input("\nPlease provide path to input file (*.xlsx).\nSheet with data to be listed as 'DATA':")
+    filename=input("\nPlease provide path to input file (*.xlsx): ")
     filename=filename[1:-1] # strips quotes from path
-    
+
+    # sheet Excel file with data
+    print("\n## Simulation results in worksheet 'DATA'. Note required layout. ##")
+    u=input("Press ENTER to confirm, or provide name of worksheet: ")
+    if u!='': sheet=u;
+    else: sheet='DATA'
+    print("\nWorksheet set to ", sheet)
+
     # SW_Gaussian - SW_Debug and SW_Testing for developer only
     if SW_Gaussian: 
         print("\n## Gaussian input data = True ##")
@@ -48,4 +55,4 @@ def UserInput(SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,
         u=input("dDelta_x for PDF printing: delta_x = "); x_deltaprint=float(u)
         print("\nPDF output will be printed according to 0. : %d : %d]" % (x_deltaprint,xmax_printing))
 
-    return SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint,filename
+    return SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint,filename,sheet
