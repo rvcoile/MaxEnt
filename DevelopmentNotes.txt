@@ -9,3 +9,11 @@ Of IDEE: doorsturen raw data etc. naar Entropy_Auxiliary en daarin dan "veilig" 
 
 
 # for example: calculation in m =>  calculation in mm
+
+
+## TESTS ##
+20180626 - user input version
+1. MCS Aakash - SW_oldInputSyntax = True ==> ok
+2. MCS Aakash - SW_oldInputSyntax = False ==> small difference in results, considered as coincidence (stoch. optim.)
+3. Ref01_LN_3Var - SW_oldInputSyntax = True ==> ok
+4. Ref02_LN_3Var - SW_oldInputSyntax = False ==> ok
