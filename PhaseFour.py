@@ -10,12 +10,12 @@ from LocalAuxiliary import *
 from FxEvaluationNEW import *
 
 
-def PhaseFour(m, xmax, delta_print):
+def PhaseFour(m, xmax, delta_print,targetfolder):
     print("\n##############################")
     print("### Processing of results ###")
     print("##############################\n")
 
-    Results = pd.read_excel('PhaseResults\m' + str(m) + '_PhaseThree_final.xlsx', 'result')
+    Results = pd.read_excel(targetfolder+'\\PhaseResults\\m' + str(m) + '_PhaseThree_final.xlsx', 'result')
 
     AlphaList = Alpha_List(m)
     LambdaList = Lambda_List(m)
@@ -39,12 +39,12 @@ def PhaseFour(m, xmax, delta_print):
         fx_print = fx
 
         try:
-            Print_DataFrame([Fx_print, fx_print], 'CDF_PDF\m' + str(m) + '_integration_' + str(original_simnumber),
+            Print_DataFrame([Fx_print, fx_print], targetfolder+'\\CDF_PDF\\m' + str(m) + '_integration_' + str(original_simnumber),
                             ['CDF_m' + str(m), 'PDF_m' + str(m)])
         except:
             print("strange Python printing error for original simnumber: ", original_simnumber)
             try:
-                Print_DataFrame([fx_print], 'CDF_PDF\m' + str(m) + '_integration_' + str(original_simnumber),
+                Print_DataFrame([fx_print], targetfolder+'\\CDF_PDF\\m' + str(m) + '_integration_' + str(original_simnumber),
                                 ['PDF_m' + str(m)])
                 print("but PDF try works\n")
             except:

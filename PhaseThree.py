@@ -13,9 +13,9 @@ from PrintAuxiliary import *
 from LocalAuxiliary2 import *
 from Entropy_Auxiliary import *
 
-def PhaseThree(m,xmax,RandomField_Eval,number_best_phase3,W):
+def PhaseThree(m,xmax,RandomField_Eval,number_best_phase3,W,targetfolder):
 
-	Best=pd.read_excel('PhaseResults\m'+str(m)+'_PhaseTwo.xlsx','results')
+	Best=pd.read_excel(targetfolder+'\\PhaseResults\\m'+str(m)+'_PhaseTwo.xlsx','results')
 
 	N=len(RandomField_Eval.index)
 
@@ -34,7 +34,7 @@ def PhaseThree(m,xmax,RandomField_Eval,number_best_phase3,W):
 
 	Results=Final_df
 
-	Print_DataFrame([Results],'PhaseResults\m'+str(m)+'_PhaseThree_prior',['result'])
+	Print_DataFrame([Results],targetfolder+'\\PhaseResults\\m'+str(m)+'_PhaseThree_prior',['result'])
 
 	### Reduce set based on new Z-value ###
 	#######################################
@@ -47,7 +47,7 @@ def PhaseThree(m,xmax,RandomField_Eval,number_best_phase3,W):
 
 	Redux=ReduceSet(m,value,Lambda,Alpha,number_best_phase3,simnumbers)
 
-	Print_DataFrame([Redux],'PhaseResults\m'+str(m)+'_PhaseThree_posterior',['result'])
+	Print_DataFrame([Redux],targetfolder+'\\PhaseResults\\m'+str(m)+'_PhaseThree_posterior',['result'])
 
 	Final=pd.DataFrame()
 
@@ -57,6 +57,6 @@ def PhaseThree(m,xmax,RandomField_Eval,number_best_phase3,W):
 		# Final=Final.append(Results.loc[simulations,:])
 
 
-	Print_DataFrame([Final],'PhaseResults\m'+str(m)+'_PhaseThree_final',['result'])
+	Print_DataFrame([Final],targetfolder+'\\PhaseResults\\m'+str(m)+'_PhaseThree_final',['result'])
 
 

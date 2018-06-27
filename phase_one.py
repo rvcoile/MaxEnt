@@ -30,7 +30,7 @@ def wrapper_queue(arg):
     return result
 
 
-def phase_one(m, samples_r_alpha, random_field_eval, W, x_max_default, n_proc):
+def phase_one(m, samples_r_alpha, random_field_eval, W, x_max_default, n_proc,targetfolder):
 
     # warnings.filterwarnings("ignore") # doesn't seem to make a difference here
 
@@ -134,4 +134,4 @@ def phase_one(m, samples_r_alpha, random_field_eval, W, x_max_default, n_proc):
         value.loc[i+1, :] = Zval
         Lambda.loc[i+1, :] = minimum_opt
 
-    Print_DataFrame([Alpha, Lambda, value], 'PhaseResults\m' + str(m) + '_PhaseOne', ['Alpha', 'Lambda', 'value'])
+    Print_DataFrame([Alpha, Lambda, value], targetfolder+'\\PhaseResults\\m' + str(m) + '_PhaseOne', ['Alpha', 'Lambda', 'value'])

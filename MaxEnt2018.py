@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     SW_Testing = False  # indicate if test calculation or not -- if SW_Testing == True, the Kullback - Leibler divergence will be calculated
 
-    SW_Debug = True  # OMIT standard application and DO SPECIAL REQUEST at end of the file
+    SW_Debug = False  # OMIT standard application and DO SPECIAL REQUEST at end of the file
 
     SW_Gaussian = True  # function realizations Y(X) are based on Quadrature points for X... -- make sure to adapt filename etc accordingly
 
@@ -102,8 +102,8 @@ if __name__ == "__main__":
         sub01='\\CDF_PDF'
         sub02='\\PhaseResults'
         subList=[sub01,sub02]
-        for sub in subList
-            if not os.path.exists(folder+sub): os.makedirs(folder+sub)
+        for sub in subList:
+            if not os.path.exists(targetfolder+sub): os.makedirs(targetfolder+sub)
             else: RemoveFolderData(targetfolder+sub)
 
         for m in mlist:
@@ -116,7 +116,7 @@ if __name__ == "__main__":
             # 2) determine lambda values through minimization + determine associated Z-value
             # 3) print results
 
-            phase_one(m, samples_rAlpha, RandomField_Eval, W, xmax_default, nProc)
+            phase_one(m, samples_rAlpha, RandomField_Eval, W, xmax_default, nProc,targetfolder)
 
             ###########################################################
             ### PHASE TWO: LHS Monte Carlo AROUND BEST REALIZATIONS ###
@@ -128,7 +128,7 @@ if __name__ == "__main__":
             # 2) determines reduced set of best results
             # 3) print reduced set
 
-            PhaseTwo(m, number_best_phase2)
+            PhaseTwo(m, number_best_phase2,targetfolder)
 
             ##########################################
             ### PHASE THREE: ACCEPTING BEST RESULT ###
@@ -138,14 +138,14 @@ if __name__ == "__main__":
             # 2) recalculate Z-value
             # 3) print results - no PYTHON reordering of results yet...
 
-            PhaseThree(m, xmax_default, RandomField_Eval, number_best_phase3, W)
+            PhaseThree(m, xmax_default, RandomField_Eval, number_best_phase3, W, targetfolder)
 
             ###########################
             ### EXTRA: TESTING DATA ###
             ###########################
 
             if SW_Testing:
-                Results = pd.read_excel('PhaseResults\m' + str(m) + '_PhaseThree_final.xlsx', 'result')
+                Results = pd.read_excel(targetfolder+'PhaseResults\\m' + str(m) + '_PhaseThree_final.xlsx', 'result')
 
                 # Testing LN variable
                 mean_LN = 46.8
@@ -161,7 +161,7 @@ if __name__ == "__main__":
 
                 Results['K'] = K
                 # reprint the Result dataframe
-                Print_DataFrame([Results], 'PhaseResults\m' + str(m) + '_PhaseThree_final', ['result'])
+                Print_DataFrame([Results], targetfolder+'PhaseResults\\m' + str(m) + '_PhaseThree_final', ['result'])
 
             ###################################
             ### PHASE FOUR: POST-PROCESSING ###
@@ -173,7 +173,7 @@ if __name__ == "__main__":
 
             # sometimes problems in printing may occur!! -- not yet coded for correction !!
 
-            PhaseFour(m, xmax_printing, x_deltaprint)
+            PhaseFour(m, xmax_printing, x_deltaprint,targetfolder)
 
         ################################
         ### PHASE FIVE: FINAL-RESULT ###
@@ -200,7 +200,7 @@ if __name__ == "__main__":
 
         print(RandomField_Eval)
 
-        Print_DataFrame([RandomField_Eval], 'TEST', ['GaussSyntax'])
+        Print_DataFrame([RandomField_Eval], targetfolder+'\\'+'TEST', ['GaussSyntax'])
 
         # print()
 

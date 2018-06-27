@@ -13,15 +13,15 @@ def UserInput(SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,
     # sheet Excel file with data
     print("\n## Simulation results in worksheet 'DATA'. Note required layout. ##")
     u=input("Press ENTER to confirm, or provide name of worksheet: ")
-    if u!='': targetfolder=u; print("\nMaxEnt output will be saved in ", targetfolder)
-    else: targetfolder=''
+    if u!='': sheet=u;
+    else: sheet='DATA'
+    print("\nWorksheet set to ", sheet)
 
     # target folder
     print("\n## MaxEnt results will be saved in local worker directory. ##")
     u=input("Press ENTER to confirm, or provide path to alternative directory: ")
-    if u!='': sheet=u;
-    else: sheet='DATA'
-    print("\nWorksheet set to ", sheet)
+    if u!='': targetfolder=u; print("\nMaxEnt output will be saved in ", targetfolder)
+    else: targetfolder=''
 
     # SW_Gaussian - SW_Debug and SW_Testing for developer only
     if SW_Gaussian: 

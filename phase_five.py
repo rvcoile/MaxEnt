@@ -9,13 +9,13 @@ from PrintAuxiliary import *
 
 
 
-def PhaseFive(mlist,number_best):
+def PhaseFive(mlist,number_best,targetfolder):
 
 	Totallist=pd.DataFrame()
 
 	for m in mlist:
 
-		PhaseThree_final=pd.read_excel('PhaseResults\m'+str(m)+'_PhaseThree_final.xlsx','result')
+		PhaseThree_final=pd.read_excel(targetfolder+'\\PhaseResults\\m'+str(m)+'_PhaseThree_final.xlsx','result')
 
 		Totallist=Totallist.append(PhaseThree_final,ignore_index=True)
 
@@ -39,5 +39,5 @@ def PhaseFive(mlist,number_best):
 		Final=Final.append(Totallist.loc[idx,:])
 		# Final=Final.append(Results.loc[simulations,:])
 
-	Print_DataFrame([Final],'PhaseResults\PhaseFive',['result'])
+	Print_DataFrame([Final],targetfolder+'\\PhaseResults\\PhaseFive',['result'])
 
