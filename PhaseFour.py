@@ -8,9 +8,20 @@ import scipy as scipy
 from PrintAuxiliary import *
 from LocalAuxiliary import *
 from FxEvaluationNEW import *
+from statFunc import p_Lognormal
+from LocalAuxiliary import Default_PDF_approx
 
 
-def PhaseFour(m, xmax, delta_print,targetfolder):
+def PhaseFour(m, xmax, delta_print,targetfolder,RandomField_Eval,W,approxFunction):
+
+
+    ### default distribution CDF and PDF approx ###
+    ###############################################
+
+    M,s,PDF_LN,CDF_LN,cCDF_LN=Default_PDF_approx(approxFunction,RandomField_Eval,W,xmax,delta_print)
+
+    ### ME-MDRM Phase Four ###
+    ##########################
     print("\n##############################")
     print("### Processing of results ###")
     print("##############################\n")
@@ -24,19 +35,20 @@ def PhaseFour(m, xmax, delta_print,targetfolder):
     ### calculation CDF and PDF for Results ###
     ###########################################
 
-    xlim = np.arange(0., xmax, delta_print)
+    xlim = np.arange(0., xmax+delta_print, delta_print)
 
     for number in list(Results.index.values):
         tmp = pd.DataFrame(Results.loc[number, columnlist].values, columns=['min'], index=columnlist)
         # print '\n', tmp
         Lambda_Alpha = tmp.transpose()
         fx = fxCalc(xlim, Lambda_Alpha)
-        Fx = FxCalc(xlim, Lambda_Alpha, xmax, method='numerical')
+        Fx = FxCalc(xlim, Lambda_Alpha, xmax, method='numerical'); Fx=np.asarray(Fx)
 
         original_simnumber = Results.loc[number, 'simnumber']
 
-        Fx_print = pd.DataFrame(Fx, index=xlim, columns=['CDF_m' + str(m)])
-        fx_print = fx
+        Fx_print = pd.DataFrame([Fx,1-Fx,CDF_LN,cCDF_LN], columns=xlim, index=['CDF_m' + str(m),'cCDF_m' + str(m),'CDF_LN','cCDF_LN'])
+        Fx_print=Fx_print.transpose()
+        fx_print = fx; fx_print['PDF_LN']=PDF_LN
 
         try:
             Print_DataFrame([Fx_print, fx_print], targetfolder+'\\CDF_PDF\\m' + str(m) + '_integration_' + str(original_simnumber),

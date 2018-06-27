@@ -5,6 +5,8 @@
 import numpy as np
 import pandas as pd
 from GaussWeightsAndPoints import GaussWeighting
+from Entropy_Auxiliary import fraction_moment
+from statFunc import p_Lognormal, f_Lognormal, F_Lognormal
 
 
 ###########################
@@ -118,6 +120,23 @@ def ReadDatapoints(SW_Gaussian,SW_oldInputSyntax,filename,sheet):
                 RandomField_Eval = RandomField_Eval.append(tmp)
 
     return W, RandomField_Eval
+
+def Default_PDF_approx(approxFunction,RandomField_Eval,W,xmax_printing,x_deltaprint):
+
+    # LN distribution
+    if approxFunction=='LN':
+        # Moments of the PDF as assessed by MDRM-G (or MCS as appropriate)
+        M=fraction_moment(1, RandomField_Eval, W)
+        M2=fraction_moment(2, RandomField_Eval, W)
+        s=np.sqrt(M2-M**2)
+        
+        # PDF and CDF evaluation
+        PDF_LN=f_Lognormal(np.arange(0.,xmax_printing+x_deltaprint,x_deltaprint),M,s)
+        CDF_LN=F_Lognormal(np.arange(0.,xmax_printing+x_deltaprint,x_deltaprint),M,s)
+        cCDF_LN=1-CDF_LN
+
+    return M,s,PDF_LN,CDF_LN,cCDF_LN
+
 
 
 #########################

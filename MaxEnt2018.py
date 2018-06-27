@@ -15,7 +15,7 @@ from PhaseFour import *
 from phase_five import *
 from GaussWeightsAndPoints import *
 from UserInput import UserInput
-from LocalAuxiliary import ReadDatapoints
+from LocalAuxiliary import ReadDatapoints, Default_PDF_approx
 from PrintAuxiliary import Print_DataFrame
 import time
 
@@ -65,6 +65,8 @@ if __name__ == "__main__":
 
     xmax_printing = 500.  # range for calc CDF and PDF -- make sure this is a float!!!!
     x_deltaprint = 1.0
+
+    approxFunction='LN' # default approximation MDRM-G procedure (currently only 'LN')
 
     #####################
     ###  DATA READING ###
@@ -173,7 +175,7 @@ if __name__ == "__main__":
 
             # sometimes problems in printing may occur!! -- not yet coded for correction !!
 
-            PhaseFour(m, xmax_printing, x_deltaprint,targetfolder)
+            PhaseFour(m, xmax_printing, x_deltaprint,targetfolder,RandomField_Eval,W,approxFunction)
 
         ################################
         ### PHASE FIVE: FINAL-RESULT ###
@@ -198,11 +200,16 @@ if __name__ == "__main__":
 
         print("\n## Debug zone ##\n")
 
-        PhaseFive(mlist, number_best_phase5,targetfolder)
+        m=4
+        PhaseFour(m, xmax_printing, x_deltaprint,targetfolder,RandomField_Eval,W,approxFunction)
 
-        # print(RandomField_Eval)
+        # m,s,PDF_LN,CDF_LN,cCDF_LN=Default_PDF_approx(approxFunction,RandomField_Eval,W,xmax_printing,x_deltaprint)
 
-        # Print_DataFrame([RandomField_Eval], targetfolder+'\\'+'TEST', ['GaussSyntax'])
+        # out=pd.DataFrame([np.arange(0.,xmax_printing+x_deltaprint,x_deltaprint),PDF_LN,CDF_LN,cCDF_LN],index=['X','PDF_LN','CDF_LN','cCDF_LN'])
+        # out=out.transpose()
+        # param=pd.DataFrame([m,s,s/m],index=['m','s','V'])
+
+        # Print_DataFrame([out,param], targetfolder+'\\'+'LNapprox', ['LN','param'])
 
         # # print()
 
