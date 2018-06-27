@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     SW_Testing = False  # indicate if test calculation or not -- if SW_Testing == True, the Kullback - Leibler divergence will be calculated
 
-    SW_Debug = False  # OMIT standard application and DO SPECIAL REQUEST at end of the file
+    SW_Debug = True  # OMIT standard application and DO SPECIAL REQUEST at end of the file
 
     SW_Gaussian = True  # function realizations Y(X) are based on Quadrature points for X... -- make sure to adapt filename etc accordingly
 
@@ -181,7 +181,7 @@ if __name__ == "__main__":
 
         # read PhaseThree_final results for all m in mlist => determine reduced set of optimum overall simulations
 
-        PhaseFive(mlist, number_best_phase5)
+        PhaseFive(mlist, number_best_phase5,targetfolder)
 
         print("finalized in %s min" % ((time.time()-start_time)/60))
 
@@ -198,11 +198,13 @@ if __name__ == "__main__":
 
         print("\n## Debug zone ##\n")
 
-        print(RandomField_Eval)
+        PhaseFive(mlist, number_best_phase5,targetfolder)
 
-        Print_DataFrame([RandomField_Eval], targetfolder+'\\'+'TEST', ['GaussSyntax'])
+        # print(RandomField_Eval)
 
-        # print()
+        # Print_DataFrame([RandomField_Eval], targetfolder+'\\'+'TEST', ['GaussSyntax'])
+
+        # # print()
 
         # print(fraction_moment(0.3, RandomField_Eval, W))
 
