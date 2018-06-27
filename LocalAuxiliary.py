@@ -87,7 +87,35 @@ def ReadDatapoints(SW_Gaussian,SW_oldInputSyntax,filename,sheet):
             W=0 #  Gauss weights zero, cfr. MCS input
             RandomField_Eval=pd.DataFrame(RawData.values,columns=['X'],index=RawData.index)
         else:
-            pass
+            # determine number of Gauss points
+            GaussIndex=RawData['j']
+            print(GaussIndex)
+            L=GaussIndex.max()
+            if L != 5:
+                print("Not standard functionality. Seek help for implementation.")
+            else:
+                # number of stochastic variables
+                n=int(np.round((GaussIndex.size-1)/4)) # should be int anyway
+                print("\nDataset identified as Gaussian, with L = %i and n = %i" % (L,n))
+                # initialize RandomField_Eval
+                columns=[]
+                for l in np.arange(1,n+1): # starts from 2 to avoid CENTRAL at first entry
+                    name='X'+str(l)
+                    columns.append(name)
+                CENTRAL=RawData.loc[1,'Y']
+                RandomField_Eval=CENTRAL*pd.DataFrame(np.ones((L,n)),columns=columns,index=np.arange(1,L+1))
+                # assign realizations to positions in DataFrame
+                for index in RawData.index:
+                    j=RawData.loc[index,'j']
+                    l=RawData.loc[index,'l']
+                    yjl=RawData.loc[index,'Y']
+                    if j!=0: RandomField_Eval.loc[j,'X'+str(l)]=yjl
+                # Determine Gauss weights
+                print(RandomField_Eval)
+                W = GaussWeighting(RandomField_Eval)
+                # finalize original syntax by appending CENTRAL
+                tmp=pd.DataFrame([CENTRAL],index=['CENTRAL'],columns=['CENTRAL'])
+                RandomField_Eval = RandomField_Eval.append(tmp)
 
     return W, RandomField_Eval
 
