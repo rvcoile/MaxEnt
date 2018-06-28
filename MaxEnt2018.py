@@ -13,6 +13,7 @@ from PhaseTwo import *
 from PhaseThree import *
 from PhaseFour import *
 from phase_five import *
+from PhaseSix import PhaseSix
 from GaussWeightsAndPoints import *
 from UserInput import UserInput
 from LocalAuxiliary import ReadDatapoints, Default_PDF_approx
@@ -40,7 +41,7 @@ if __name__ == "__main__":
 
     SW_Testing = False  # indicate if test calculation or not -- if SW_Testing == True, the Kullback - Leibler divergence will be calculated
 
-    SW_Debug = True  # OMIT standard application and DO SPECIAL REQUEST at end of the file
+    SW_Debug = False  # OMIT standard application and DO SPECIAL REQUEST at end of the file
 
     SW_Gaussian = True  # function realizations Y(X) are based on Quadrature points for X... -- make sure to adapt filename etc accordingly
 
@@ -185,6 +186,12 @@ if __name__ == "__main__":
 
         PhaseFive(mlist, number_best_phase5,targetfolder)
 
+        #####################################
+        ### PHASE SIX: AUTO-VISUALIZATION ###
+        #####################################
+
+        PhaseSix(targetfolder)
+
         print("finalized in %s min" % ((time.time()-start_time)/60))
 
     else:
@@ -200,8 +207,12 @@ if __name__ == "__main__":
 
         print("\n## Debug zone ##\n")
 
-        m=4
-        PhaseFour(m, xmax_printing, x_deltaprint,targetfolder,RandomField_Eval,W,approxFunction)
+        PhaseSix(targetfolder)
+
+        
+
+
+
 
         # m,s,PDF_LN,CDF_LN,cCDF_LN=Default_PDF_approx(approxFunction,RandomField_Eval,W,xmax_printing,x_deltaprint)
 

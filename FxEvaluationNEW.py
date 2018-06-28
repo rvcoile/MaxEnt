@@ -81,7 +81,7 @@ def fxCalc(xlimlist, Lambda_Alpha):
     number = len(xlimlist)
     fx = np.ones(number)
 
-    fx = pd.DataFrame(0, index=xlimlist, columns=['m' + str(m)])
+    fx = pd.DataFrame(0, index=xlimlist, columns=['PDF_m' + str(m)])
     x = pd.DataFrame(xlimlist, index=xlimlist, columns=['m' + str(m)])
 
     n = 0

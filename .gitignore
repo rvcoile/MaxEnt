@@ -8,3 +8,8 @@ SAVE/
 CDF_PDF/
 PhaseResults/
 Samples/
+
+# specific types of files
+*.xlsx
+*.png
+*.pyc
