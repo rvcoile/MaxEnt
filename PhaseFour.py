@@ -19,6 +19,8 @@ def PhaseFour(m, xmax, delta_print,targetfolder,RandomField_Eval,W,approxFunctio
     ###############################################
 
     M,s,PDF_LN,CDF_LN,cCDF_LN=Default_PDF_approx(approxFunction,RandomField_Eval,W,xmax,delta_print)
+    param=pd.DataFrame([M,s,s/M],index=['m','s','V'],columns=['Y'])
+    Print_DataFrame([param],targetfolder+'\\CDF_PDF\\Parameters',['Result'])
 
     ### ME-MDRM Phase Four ###
     ##########################
