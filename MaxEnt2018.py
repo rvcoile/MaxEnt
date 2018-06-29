@@ -20,6 +20,8 @@ from LocalAuxiliary import ReadDatapoints, Default_PDF_approx
 from PrintAuxiliary import Print_DataFrame
 import time
 
+import os
+
 ### NOTE ###
 ############
 # the range of the distribution should (mostly) be clearly above 1. If this is not the case, change the dimension by multiplying with a factor
@@ -81,7 +83,6 @@ if __name__ == "__main__":
     ## Overview of default values and possibility of user correction ##
     # filename = 'Test_LN_3Var_Gauss5.xlsx' # can be used when deactivating UserInput
     SW_Gaussian,nProc,mList,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint,filename,sheet,targetfolder=UserInput(SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint)
-    
 
     """ ################################################################################## """
     """ ###################### STANDARD CALCULATION CORE ################################# """
@@ -106,8 +107,10 @@ if __name__ == "__main__":
         sub02='\\PhaseResults'
         subList=[sub01,sub02]
         for sub in subList:
-            if not os.path.exists(targetfolder+sub): os.makedirs(targetfolder+sub)
-            else: RemoveFolderData(targetfolder+sub)
+            targetdir=str(targetfolder+sub)
+            if not os.path.exists(targetdir): 
+                os.mkdir(targetdir)
+            else: RemoveFolderData(targetdir)
 
         for m in mlist:
 
@@ -207,7 +210,8 @@ if __name__ == "__main__":
 
         print("\n## Debug zone ##\n")
 
-        PhaseSix(targetfolder)
+        m=4
+        PhaseFour(m, xmax_printing, x_deltaprint,targetfolder,RandomField_Eval,W,approxFunction)
 
         
 
