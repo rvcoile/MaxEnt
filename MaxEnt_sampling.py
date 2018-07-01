@@ -57,6 +57,21 @@ def SamplePointCalc(local_StochVar,r):
 
     return ParameterRealization_r(parDict,r)
 
+def MeanEval(local_StochVar):
+
+    # data
+    info1=local_StochVar['info1']
+    info2=local_StochVar['info2']
+
+    # determine mean value for variable
+    if info1=='mean':
+        return local_StochVar['p1']
+    elif info1=='char':
+        if info2=='std':
+            return local_StochVar['p1']+2*local_StochVar['p2'] # 2x std as hardcoded default
+        elif info2=='cov':
+            return local_StochVar['p1']/(1-2*local_StochVar['p2'])
+
 def GaussSampleScheme(L,n,nSim):
 
     # initialize
@@ -125,6 +140,12 @@ L=5 # number of Gauss points per variable
 # outdir="C:/Users/rvcoile/Documents/Python Scripts/MaxEnt2018"
 # L=5
 
+# Safety format testing => include run for mean values
+print("\n(DEVELOPER) ## Include simulation of mean value = FALSE. ##")
+u=input("Press ENTER to confirm, or press any other key to add mean value calculation (DEVELOPER ONLY):")
+if u=='': SW_add_mean=False
+else: SW_add_mean=True
+
 ## sample points per variable ##
 ################################
 
@@ -152,6 +173,18 @@ for var in StochVar.columns:
 ## assign in sampling scheme ##
 samplingScheme=GaussSampleScheme(L,n,nSim)
 samples_modelInput=CalculationPoints(samplingScheme,GaussPoint_df)
+
+# add mean value realization if requested
+if SW_add_mean:
+    # initialize series
+    s = pd.Series(index=samples_modelInput.columns); s.name='MeanEval'
+    # iterate over stochastic variables and introduce mean value for each of them
+    for var in StochVar.columns:
+        local_StochVar=StochVar[var]
+        mean=MeanEval(local_StochVar)
+        s[local_StochVar['number']]=mean
+    # add series to sampling dataframe
+    samples_modelInput=samples_modelInput.append(s)
 
 ## print results ##
 ###################

@@ -43,7 +43,7 @@ if __name__ == "__main__":
 
     SW_Testing = False  # indicate if test calculation or not -- if SW_Testing == True, the Kullback - Leibler divergence will be calculated
 
-    SW_Debug = True  # OMIT standard application and DO SPECIAL REQUEST at end of the file
+    SW_Debug = False  # OMIT standard application and DO SPECIAL REQUEST at end of the file
 
     SW_Gaussian = True  # function realizations Y(X) are based on Quadrature points for X... -- make sure to adapt filename etc accordingly
 
@@ -210,9 +210,9 @@ if __name__ == "__main__":
 
         print("\n## Debug zone ##\n")
 
-        m=4
-        PhaseFour(m, xmax_printing, x_deltaprint,targetfolder,RandomField_Eval,W,approxFunction)
-
+        # m=4
+        # PhaseFour(m, xmax_printing, x_deltaprint,targetfolder,RandomField_Eval,W,approxFunction)
+        PhaseSix(targetfolder)
         
 
 
