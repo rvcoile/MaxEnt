@@ -144,7 +144,7 @@ L=5 # number of Gauss points per variable
 print("\n(DEVELOPER) ## Include simulation of mean value = FALSE. ##")
 u=input("Press ENTER to confirm, or press any other key to add mean value calculation (DEVELOPER ONLY):")
 if u=='': SW_add_mean=False
-else: SW_add_mean=True
+else: SW_add_mean=True; print("\n### MEAN VALUE EVALUATION ADDED ###\n###################################\n")
 
 ## sample points per variable ##
 ################################
