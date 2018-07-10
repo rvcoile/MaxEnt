@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
     SW_Testing = False  # indicate if test calculation or not -- if SW_Testing == True, the Kullback - Leibler divergence will be calculated
 
-    SW_Debug = False  # OMIT standard application and DO SPECIAL REQUEST at end of the file
+    SW_Debug = True  # OMIT standard application and DO SPECIAL REQUEST at end of the file
 
     SW_Gaussian = True  # function realizations Y(X) are based on Quadrature points for X... -- make sure to adapt filename etc accordingly
 
