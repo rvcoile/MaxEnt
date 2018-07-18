@@ -8,24 +8,26 @@
 # spring 2018: Ian.Fu@olssonfire.com and Danny.Hopkin@olssonfire.com: transfer to Python 3.6 + multiprocessing capability: MaxEntropyPDFestimate.py
 # current version: reconceptualization (samples in referenced directories + saving of output)
 
-from phase_one import *
-from PhaseTwo import *
-from PhaseThree import *
-from PhaseFour import *
-from phase_five import *
+from phase_one import phase_one
+from PhaseTwo import PhaseTwo
+from PhaseThree import PhaseThree
+from PhaseFour import PhaseFour
+from phase_five import PhaseFive
 from PhaseSix import PhaseSix
-from GaussWeightsAndPoints import *
 from UserInput import UserInput
 from LocalAuxiliary import ReadDatapoints, Default_PDF_approx
 from PrintAuxiliary import Print_DataFrame
 import time
 
 import os
+import GaussWeightsAndPoints
+
 
 ### NOTE ###
 ############
 # the range of the distribution should (mostly) be clearly above 1. If this is not the case, change the dimension by multiplying with a factor
-
+# the MaxEnt formula considers an output bounded [0; inf[ 
+# code applies numerical integration in limited domain => caution; domain specification important
 
 if __name__ == "__main__":
     # if __name__ ... # requirement for parallel computing capability
@@ -52,6 +54,8 @@ if __name__ == "__main__":
     ################
     ### CONTROLS ###
     ################
+
+    # Default values control parameters
 
     nProc = 2 # number of processors
 
@@ -210,26 +214,5 @@ if __name__ == "__main__":
 
         print("\n## Debug zone ##\n")
 
-        # m=4
-        # PhaseFour(m, xmax_printing, x_deltaprint,targetfolder,RandomField_Eval,W,approxFunction)
         PhaseSix(targetfolder)
-        
 
-
-
-
-        # m,s,PDF_LN,CDF_LN,cCDF_LN=Default_PDF_approx(approxFunction,RandomField_Eval,W,xmax_printing,x_deltaprint)
-
-        # out=pd.DataFrame([np.arange(0.,xmax_printing+x_deltaprint,x_deltaprint),PDF_LN,CDF_LN,cCDF_LN],index=['X','PDF_LN','CDF_LN','cCDF_LN'])
-        # out=out.transpose()
-        # param=pd.DataFrame([m,s,s/m],index=['m','s','V'])
-
-        # Print_DataFrame([out,param], targetfolder+'\\'+'LNapprox', ['LN','param'])
-
-        # # print()
-
-        # print(fraction_moment(0.3, RandomField_Eval, W))
-
-        # Points = GaussPoints(17)
-
-        # Print_DataFrame([Points], 'Ztmp', ['result'])

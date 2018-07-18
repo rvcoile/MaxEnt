@@ -1,3 +1,9 @@
+################
+## 2018-06-27 ##
+################
+
+# removed disclaimer notes:
+
 MC or LHS input sample points of LN-distribution have been moved to separate file 'InputForTesting.py'
 
 big difference with V3 => updated search algorithm for minimization based on fixed (random realization of) alpha
@@ -6,9 +12,7 @@ TO DO: beter alpha als tuple doorsturen naar Z etc. Huidige werkwijze is bullshi
 
 Of IDEE: doorsturen raw data etc. naar Entropy_Auxiliary en daarin dan "veilig" de alpha's en fractional moments constant !!!
 
-
-
-# for example: calculation in m =>  calculation in mm
+for example: calculation in m =>  calculation in mm
 
 
 ## TESTS ##
@@ -17,3 +21,14 @@ Of IDEE: doorsturen raw data etc. naar Entropy_Auxiliary en daarin dan "veilig" 
 2. MCS Aakash - SW_oldInputSyntax = False ==> small difference in results, considered as coincidence (stoch. optim.)
 3. Ref01_LN_3Var - SW_oldInputSyntax = True ==> ok
 4. Ref02_LN_3Var - SW_oldInputSyntax = False ==> ok
+
+
+################
+## 2018-07-18 ##
+################
+
+## To develop
+- Known distribution tests + visualization
+Apply multiple approximation distributions with parameters from MDRM-G
+Apply AIC or other information criterion to determine which one fits Maximum Entropy estimate best
+Visualize

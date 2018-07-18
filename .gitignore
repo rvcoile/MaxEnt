@@ -1,15 +1,12 @@
-# files without extension
+# ignore everything by default - except .gitignore
 *
-!*/
-!*.*
+!.gitignore
 
-# folders and files to be ignored by Git
-SAVE/
-CDF_PDF/
-PhaseResults/
-Samples/
+# # folders and files to be ignored by Git
+# SAVE/
+# CDF_PDF/
+# PhaseResults/
+# Samples/
 
-# specific types of files
-*.xlsx
-*.png
-*.pyc
+# track specific types of files
+*.py
