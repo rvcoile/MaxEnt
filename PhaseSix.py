@@ -31,10 +31,6 @@ def PhaseSix(reffolder):
     folder=reffolder
     name=folder.rsplit('\\', 1)[-1] # project name for *.png naming
 
-
-    # m-level
-    m=4 # hardcoded for trial level of MaxEnt evaluation - should be result of Phase5 
-
     # offset for optimum simulation number choice
     simAdd=0 # can be elaborated to apply offset when CDF not correctly evaluated numerically
 
@@ -51,6 +47,7 @@ def PhaseSix(reffolder):
 
     ## READ CDF-PDF
     n=simList[0+simAdd]
+    m=phase5.loc[0+simAdd,'m']
     # file with data
     resultfile=folder+'/CDF_PDF/m'+str(m)+'_integration_'+str(n)+'.xlsx'
     # read file

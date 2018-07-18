@@ -16,6 +16,7 @@ def PhaseFive(mlist,number_best,targetfolder):
 	for m in mlist:
 
 		PhaseThree_final=pd.read_excel(targetfolder+'\\PhaseResults\\m'+str(m)+'_PhaseThree_final.xlsx','result')
+		PhaseThree_final['m']=m
 
 		## To Do : add m-indication
 
