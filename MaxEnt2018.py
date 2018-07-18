@@ -82,7 +82,7 @@ if __name__ == "__main__":
 
     ## Overview of default values and possibility of user correction ##
     # filename = 'Test_LN_3Var_Gauss5.xlsx' # can be used when deactivating UserInput
-    SW_Gaussian,nProc,mList,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint,filename,sheet,targetfolder=UserInput(SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint)
+    SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint,filename,sheet,targetfolder=UserInput(SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint)
 
     """ ################################################################################## """
     """ ###################### STANDARD CALCULATION CORE ################################# """
