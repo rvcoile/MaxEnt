@@ -28,7 +28,13 @@ for example: calculation in m =>  calculation in mm
 ################
 
 ## To develop
+- revisit phase1
+Range of alpha-values unclear => can it be further limited without loss of generality?
+
+
 - Known distribution tests + visualization
 Apply multiple approximation distributions with parameters from MDRM-G
 Apply AIC or other information criterion to determine which one fits Maximum Entropy estimate best
 Visualize
+
+- issue CDF and cCDF printing (values >>> 1)
