@@ -1,12 +1,9 @@
 # __author__ = "RVC"
 # __email__= "ruben.vancoile@gmail.com"
-# __date__= "2018-06-26"
+# __date__= "2018-07-19"
 
 
-# reference versions
-# 2015-07-09: full version Python 2.7: MaxEntropyPDFestimate.py
-# spring 2018: Ian.Fu@olssonfire.com and Danny.Hopkin@olssonfire.com: transfer to Python 3.6 + multiprocessing capability: MaxEntropyPDFestimate.py
-# current version: reconceptualization (samples in referenced directories + saving of output)
+# functionalized MaxEnt2018.py
 
 from phase_one import phase_one
 from PhaseTwo import PhaseTwo
@@ -25,12 +22,9 @@ import GaussWeightsAndPoints
 
 ### NOTE ###
 ############
-# the range of the distribution should (mostly) be clearly above 1. If this is not the case, change the dimension by multiplying with a factor
-# the MaxEnt formula considers an output bounded [0; inf[ 
-# code applies numerical integration in limited domain => caution; domain specification important
+# see all reference for MaxEnt2018.py
 
-if __name__ == "__main__":
-    # if __name__ ... # requirement for parallel computing capability
+def MaxEnt2018(outdir,file,SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint):
 
     start_time=time.time()
     print("\nStarting MaxEnt.py\n## All user input must conform with syntax requirements ##\n")
@@ -43,13 +37,9 @@ if __name__ == "__main__":
     ### SWITCHES ###
     ################
 
-    branch='alphaTest'
-
     SW_Testing = False  # indicate if test calculation or not -- if SW_Testing == True, the Kullback - Leibler divergence will be calculated
 
     SW_Debug = False  # OMIT standard application and DO SPECIAL REQUEST at end of the file
-
-    SW_Gaussian = True  # function realizations Y(X) are based on Quadrature points for X... -- make sure to adapt filename etc accordingly
 
     SW_oldInputSyntax = False # old input syntax for Gauss datapoints
 
@@ -57,23 +47,12 @@ if __name__ == "__main__":
     ### CONTROLS ###
     ################
 
+    branch='alphaTest'
+
     # Default values control parameters
-
-    nProc = 2 # number of processors
-
-    mlist = [4]  # order of the PDF approximation - extend later for multi-m search conform (Inverardi and Tagliani, 2013)
-
-    samples_rAlpha = 10 ** 3  # number of LHS samples Alpha - PHASE ONE - fixed Alpha values
-
     number_best_phase2 = 50  # number of best values considered for PHASE TWO
     number_best_phase3 = 10  # number of best values considered for PHASE THREE
     number_best_phase5 = 5  # number of best values considered for PHASE FIVE (i.e. considering m/N)
-
-    """ TAKE NOTE TAKE NOTE TAKE NOTE """
-    xmax_default = 1000.  # # extremely import variable if you move away from the LN testcase
-
-    xmax_printing = 500.  # range for calc CDF and PDF -- make sure this is a float!!!!
-    x_deltaprint = 1.0
 
     approxFunction='LN' # default approximation MDRM-G procedure (currently only 'LN')
 
@@ -88,7 +67,8 @@ if __name__ == "__main__":
 
     ## Overview of default values and possibility of user correction ##
     # filename = 'Test_LN_3Var_Gauss5.xlsx' # can be used when deactivating UserInput
-    SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint,filename,sheet,targetfolder=UserInput(SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint,branch)
+    SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint,filename,sheet,targetfolder=UserInput(
+        SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint,branch,SW_Independent=False,filename=file,sheet='DATA',targetfolder=outdir)
 
     """ ################################################################################## """
     """ ###################### STANDARD CALCULATION CORE ################################# """
