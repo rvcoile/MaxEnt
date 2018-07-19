@@ -92,6 +92,7 @@ if __name__ == "__main__":
     """ ###################### STANDARD CALCULATION CORE ################################# """
     """ ################################################################################## """
 
+
     ###########################
     ### CALCULATION CENTER  ###
     ###########################
@@ -214,5 +215,18 @@ if __name__ == "__main__":
 
         print("\n## Debug zone ##\n")
 
-        PhaseFive(mlist, number_best_phase5,targetfolder)
+
+        # PhaseFive(mlist, number_best_phase5,targetfolder)
+
+    ###############
+    ### CLOSURE ###
+    ###############
+
+    totaltime=(time.time()-start_time)/60
+
+    print("finalized in %f min" % totaltime)
+
+    with open(targetfolder+'\\MaxEnt_calcParameters.txt','a') as f:
+        
+        f.write('\n\nTotal calculation time: %.1f min' % totaltime)
 

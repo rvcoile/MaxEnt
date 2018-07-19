@@ -3,6 +3,9 @@
 # __date__= "2018-06-26"
 
 import numpy as np
+import json
+import time
+import os
 
 def UserInput(SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint):
 
@@ -63,5 +66,27 @@ def UserInput(SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,
         xmax_printing=float(u)
         u=input("dDelta_x for PDF printing: delta_x = "); x_deltaprint=float(u)
         print("\nPDF output will be printed according to 0. : %d : %d]" % (x_deltaprint,xmax_printing))
+
+    ##############################
+    ### PRINT SIMULATION INFO  ###
+    ##############################
+
+    with open('BRANCH.txt','r') as ff:
+        branch=ff.readline()
+
+    with open(targetfolder+'\\MaxEnt_calcParameters.txt','w') as f:
+        
+        f.write('OVERVIEW OF MaxEnt SIMULATION PARAMETERS\n\n')
+        f.write('input file:\n%s\nworksheet: %s\n' % (filename,sheet))
+        if SW_Gaussian: f.write('\nGaussian input data')
+        else: f.write('\nMCS input data')
+        f.write('\nm-values evaluated: ')
+        json.dump(mlist, f)
+        f.write('\nLHS alpha-evaluations = 10**%i\nxmax normalization = [0, %d]\n\nPDF-CDF printing according to [0. : %d : %d]' %(np.log10(samples_rAlpha),xmax_default,x_deltaprint,xmax_printing))
+
+        f.write('\n\nCurrent branch: %s\nMaxEnt Worker directory is:\n%s\n' % (branch,os.getcwd()))
+        f.write('\nStart time: %s' % time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))
+        f.write('\n\n%i processors' % nProc)
+
 
     return SW_Gaussian,nProc,mlist,samples_rAlpha,xmax_default,xmax_printing,x_deltaprint,filename,sheet,targetfolder
