@@ -47,7 +47,7 @@ def phase_one(m, samples_r_alpha, random_field_eval, W, x_max_default, n_proc,ta
     ### LHS alpha generation ###
     ############################
 
-    A_range = [-2, 2]  # range for fractional exponents
+    A_range = [0, 1]  # range for fractional exponents
     AlphaList = Alpha_List(m)
 
     aselect = LHS_rand(samples_r_alpha, m)
