@@ -16,7 +16,7 @@ from phase_five import PhaseFive
 from PhaseSix import PhaseSix
 from UserInput import UserInput
 from LocalAuxiliary import ReadDatapoints, Default_PDF_approx
-from PrintAuxiliary import Print_DataFrame
+from PrintAuxiliary import Print_DataFrame, RemoveFolderData
 import time
 
 import os
