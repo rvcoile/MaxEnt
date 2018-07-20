@@ -39,6 +39,39 @@ def Lambda_Starting(m):
         n = n + 1
     return LambdaStarting
 
+def ReduceSet_Phase3(m, value, Lambda, Alpha, number_best, simnumberlist):
+    # difference with ReduceSet not clear. Possible redundancy. To be confirmed with testing.
+    valueAbs = value.abs()
+
+    # clear valueAbs for infinite value
+    valueAbs = valueAbs.replace([np.inf, -np.inf], np.nan).dropna(axis=0, how="all")
+    print(valueAbs)
+
+    AlphaList = Alpha_List(m);
+    LambdaList = Lambda_List(m);
+    tmp = AlphaList + ['Z', 'simnumber']
+    columnlist = LambdaList + tmp
+
+    Best = pd.DataFrame(columns=columnlist)
+
+    n = 1
+    while n <= number_best:
+        simnumber = valueAbs.idxmin()
+
+        Ltmp = map(list, Lambda.loc[simnumber, :].values);
+        Atmp = map(list, Alpha.loc[simnumber, :].values);
+        Ztmp = map(list, valueAbs.loc[simnumber, :].values);
+        sim = map(list, simnumberlist.loc[simnumber, :].values)
+        datalist = list(Ltmp)[0] + list(Atmp)[0] + list(Ztmp)[0] + list(sim)[0]
+
+        tmp = pd.DataFrame(datalist, columns=[n], index=columnlist)
+        Best = Best.append(tmp.transpose())
+
+        valueAbs = valueAbs.drop(simnumber)
+        n = n + 1
+
+    return Best
+
 
 def ReduceSet(m, value, Lambda, Alpha, number_best, simnumberlist):
     valueAbs = value.abs()

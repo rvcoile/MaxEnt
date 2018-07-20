@@ -29,7 +29,8 @@ for example: calculation in m =>  calculation in mm
 
 ## To develop
 - revisit phase1
-Range of alpha-values unclear => can it be further limited without loss of generality?
+Range of alpha-values further limited without loss of generality 
+==> (delta) trial changed calculation concept
 
 
 - Known distribution tests + visualization
@@ -38,3 +39,9 @@ Apply AIC or other information criterion to determine which one fits Maximum Ent
 Visualize
 
 - issue CDF and cCDF printing (values >>> 1)
+
+- change optimisation algorithm
+
+- avoid repeat calculation sample moment
+
+- clear LHS sampling => now there is redundant sampling as order of the alphas does not matter

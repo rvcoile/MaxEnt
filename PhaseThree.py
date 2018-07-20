@@ -8,9 +8,8 @@ import scipy as scipy
 from scipy.optimize import *
 from scipy.stats import *
 from numpy import inf
-from LatinHypercube import LHS_rand
 from PrintAuxiliary import *
-from LocalAuxiliary2 import *
+from LocalAuxiliary import ReduceSet_Phase3, Alpha_List, Lambda_List
 from Entropy_Auxiliary import *
 
 def PhaseThree(m,xmax,RandomField_Eval,number_best_phase3,W,targetfolder):
@@ -45,7 +44,7 @@ def PhaseThree(m,xmax,RandomField_Eval,number_best_phase3,W,targetfolder):
 	simnumbers=Results[['simnumber']]
 
 
-	Redux=ReduceSet(m,value,Lambda,Alpha,number_best_phase3,simnumbers)
+	Redux=ReduceSet_Phase3(m,value,Lambda,Alpha,number_best_phase3,simnumbers)
 
 	Print_DataFrame([Redux],targetfolder+'\\PhaseResults\\m'+str(m)+'_PhaseThree_posterior',['result'])
 

@@ -45,8 +45,6 @@ if __name__ == "__main__":
 
     branch='alphaTest'
 
-    SW_Testing = False  # indicate if test calculation or not -- if SW_Testing == True, the Kullback - Leibler divergence will be calculated
-
     SW_Debug = False  # OMIT standard application and DO SPECIAL REQUEST at end of the file
 
     SW_Gaussian = True  # function realizations Y(X) are based on Quadrature points for X... -- make sure to adapt filename etc accordingly
@@ -57,30 +55,30 @@ if __name__ == "__main__":
     ### CONTROLS ###
     ################
 
-    # Default values control parameters
+    ## Default values control parameters - overwrite by user input
 
     nProc = 2 # number of processors
 
-    mlist = [4]  # order of the PDF approximation - extend later for multi-m search conform (Inverardi and Tagliani, 2013)
-
+    mlist = [4]  # order of the PDF approximation
     samples_rAlpha = 10 ** 3  # number of LHS samples Alpha - PHASE ONE - fixed Alpha values
+
+
+    xmax_default = 1000.  # # extremely import variable if you move away from the LN testcase
+
+    xmax_printing = 500.  # range for calc CDF and PDF -- must be a float!!!!
+    x_deltaprint = 1.0
+
+    ## Default values control parameters - no overwrite by user input
 
     number_best_phase2 = 50  # number of best values considered for PHASE TWO
     number_best_phase3 = 10  # number of best values considered for PHASE THREE
     number_best_phase5 = 5  # number of best values considered for PHASE FIVE (i.e. considering m/N)
-
-    """ TAKE NOTE TAKE NOTE TAKE NOTE """
-    xmax_default = 1000.  # # extremely import variable if you move away from the LN testcase
-
-    xmax_printing = 500.  # range for calc CDF and PDF -- make sure this is a float!!!!
-    x_deltaprint = 1.0
 
     approxFunction='LN' # default approximation MDRM-G procedure (currently only 'LN')
 
     #####################
     ###  DATA READING ###
     #####################
-
 
     """ ################################################################################## """
     """ ###################### USER INPUT & CONFIRMATION ################################# """
@@ -152,29 +150,6 @@ if __name__ == "__main__":
             # 3) print results - no PYTHON reordering of results yet...
 
             PhaseThree(m, xmax_default, RandomField_Eval, number_best_phase3, W, targetfolder)
-
-            ###########################
-            ### EXTRA: TESTING DATA ###
-            ###########################
-
-            if SW_Testing:
-                Results = pd.read_excel(targetfolder+'PhaseResults\\m' + str(m) + '_PhaseThree_final.xlsx', 'result')
-
-                # Testing LN variable
-                mean_LN = 46.8
-                cov_LN = 0.467401326
-
-                K = pd.Series(index=Results.index.values)
-
-                for entries in Results.index.values:
-                    ### Kullback - Leibler divergence ###
-                    #####################################
-                    # print "\nKullback-Leibler divergence between true pdf and estimated pdf"
-                    K[entries] = -Entropy(mean_LN, cov_LN, xmax_default) + Results.loc[entries, 'Znew']
-
-                Results['K'] = K
-                # reprint the Result dataframe
-                Print_DataFrame([Results], targetfolder+'PhaseResults\\m' + str(m) + '_PhaseThree_final', ['result'])
 
             ###################################
             ### PHASE FOUR: POST-PROCESSING ###
