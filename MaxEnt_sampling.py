@@ -26,6 +26,11 @@ from PrintAuxiliary import Print_DataFrame
 ## CORE ##
 ##########
 
+## default values ##
+####################
+
+nMCS=10**4
+
 ## user input ##
 ################
 
@@ -44,17 +49,22 @@ print("\nWorksheet set to ", sheet)
 outdir=input("\nPlease provide target directory for sampling scheme: ")
 if outdir[0]=="\"": outdir=outdir[1:-1] # strips quotes from path
 
-# Number of Gauss points
-print("\n5 Gauss points will be considered per variable. There is currently no other functionality.")
-# print("\nDefault number of Gauss integration points L = 5")
-# u=input("Press ENTER to confirm, or provide alternative number of Gauss points: ")
-L=5 # number of Gauss points per variable
+# output directory
+print("\n## MDRM-G sampling scheme. ##")
+u=input("Press ENTER to confirm, or press key to switch to MCS: ")
+if u=='': SW_Gauss=True; print("\n### MDRM-G sampling scheme confirmed ###\n###################################\n")
+else: SW_Gauss=False; print("\n### Switch to MCS sampling scheme ###\n###################################\n")
 
-# defaults for testing
-# filename="C:/Users/rvcoile/Google Drive/Research/Codes/Python3.6/MaxEnt/SamplingInput/Ref_SiF2018.xlsx"
-# sheet='INPUT'
-# outdir="C:/Users/rvcoile/Documents/Python Scripts/MaxEnt2018"
-# L=5
+if SW_Gauss:
+    # Number of Gauss points
+    print("\n5 Gauss points will be considered per variable. There is currently no other functionality.")
+    # print("\nDefault number of Gauss integration points L = 5")
+    # u=input("Press ENTER to confirm, or provide alternative number of Gauss points: ")
+    L=5 # number of Gauss points per variable
+else:
+    print("\n## Number of MCS realization = 10**%i ##" % (np.log10(nMCS)))
+    u=input("Press ENTER to confirm, or specify other power 10**x): ")
+    if u!='': nMCS=10**int(u); print("\n %i LHS realizations per m-value" % (nMCS))
 
 # Safety format testing => include run for mean values
 print("\n(DEVELOPER) ## Include simulation of mean value = FALSE. ##")
@@ -70,27 +80,54 @@ print("\nCollecting input data Stochastic variables.")
 # read input data stochastic variables
 StochVar=pd.read_excel(filename, sheet)
 n=len(StochVar.index) # number of stochastic variables. l=1..n
-nSim=(L-1)*n+1 # number of sample points - correct for odd L only... But currently functionality limited to L=5. j=1..L
-print("\nTotal stochastic variables = %i\nTotal number of sample points = %i" %(n,nSim))
 
-# Gauss points for L, and corresponding quantiles for X
-points=GaussPoints(L)
-r_realizations=F_Normal(points,0,1) # quantiles corresponding with Gauss points
-r_realizations=r_realizations.flatten()
+if SW_Gauss: # MDRM-G sampling scheme
+    # future: re-split MCS and Gauss through sub-functions?
 
-# realizations per variable
-GaussPoint_df=pd.DataFrame(index=np.arange(1,L+1))
-StochVar=StochVar.transpose()
-varList=pd.Series()
-for var in StochVar.columns:
-    local_StochVar=StochVar[var]
-    samplepoints=SamplePointCalc(local_StochVar,r_realizations)
-    GaussPoint_df[local_StochVar['number']]=samplepoints
-    varList.set_value(local_StochVar['number'],local_StochVar['X'])
+    nSim=(L-1)*n+1 # number of sample points - correct for odd L only... But currently functionality limited to L=5. j=1..L
+    print("\nTotal stochastic variables = %i\nTotal number of sample points = %i" %(n,nSim))
 
-## assign in sampling scheme ##
-samplingScheme=GaussSampleScheme(L,n,nSim)
-samples_modelInput=CalculationPoints(samplingScheme,GaussPoint_df,nSim)
+    # Gauss points for L, and corresponding quantiles for X
+    points=GaussPoints(L)
+    r_realizations=F_Normal(points,0,1) # quantiles corresponding with Gauss points
+    r_realizations=r_realizations.flatten()
+
+    # realizations per variable
+    GaussPoint_df=pd.DataFrame(index=np.arange(1,L+1))
+    StochVar=StochVar.transpose()
+    varList=pd.Series()
+    for var in StochVar.columns:
+        local_StochVar=StochVar[var]
+        samplepoints=SamplePointCalc(local_StochVar,r_realizations)
+        GaussPoint_df[local_StochVar['number']]=samplepoints
+        varList.set_value(local_StochVar['number'],local_StochVar['X'])
+
+    ## assign in sampling scheme ##
+    samplingScheme=GaussSampleScheme(L,n,nSim)
+    samples_modelInput=CalculationPoints(samplingScheme,GaussPoint_df,nSim)
+
+    # output reference
+    name='MDRMGauss_samples'
+
+else: # MCS sampling scheme
+    MCS_df=pd.DataFrame(index=np.arange(1,nMCS+1))
+    MCS_scheme=deepcopy(MCS_df)
+    StochVar=StochVar.transpose()
+    varList=pd.Series()
+    for var in StochVar.columns:
+        local_StochVar=StochVar[var]
+        r_realizations=np.random.rand(nMCS,1)
+        samplepoints=SamplePointCalc(local_StochVar,r_realizations)
+        MCS_df[local_StochVar['number']]=samplepoints
+        MCS_scheme[local_StochVar['number']]=r_realizations
+        varList.set_value(local_StochVar['number'],local_StochVar['X']) 
+
+    ## assign in sampling scheme ##
+    samplingScheme=MCS_scheme
+    samples_modelInput=MCS_df
+
+    # output reference
+    name='MCS_samples'
 
 # add mean value realization if requested
 if SW_add_mean:
@@ -110,7 +147,7 @@ if SW_add_mean:
 reference=deepcopy(samples_modelInput)
 reference.columns=varList[reference.columns]
 
-Print_DataFrame([samples_modelInput,samplingScheme,reference],outdir+'/MDRMGauss_samples',['modelInput','samplingScheme','modelInput_named'])
+Print_DataFrame([samples_modelInput,samplingScheme,reference],outdir+'/'+name,['modelInput','samplingScheme','modelInput_named'])
 
 # file stochastic variable reference path for future reference
 
