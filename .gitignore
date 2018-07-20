@@ -2,6 +2,7 @@
 *
 *.*
 !.gitignore
+*/*
 
 # # folders and files to be ignored by Git
 # SAVE/
