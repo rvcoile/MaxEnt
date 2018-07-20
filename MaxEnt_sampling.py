@@ -14,97 +14,13 @@
 
 import pandas as pd
 import numpy as np
+from copy import deepcopy
 
 from statFunc import F_Normal
 from GaussWeightsAndPoints import GaussPoints
-from probabCalc_MaxEnt import ParameterRealization_r
+from probabCalc_MaxEnt import ParameterRealization_r, SamplePointCalc, MeanEval, GaussSampleScheme, CalculationPoints
 from PrintAuxiliary import Print_DataFrame
 
-##############
-## FUNCTION ##
-##############
-
-def SamplePointCalc(local_StochVar,r):
-
-    # data
-    info1=local_StochVar['info1']
-    info2=local_StochVar['info2']
-
-    # determine mean value for variable
-    if info1=='mean':
-        m=local_StochVar['p1']
-    elif info1=='char':
-        if info2=='std':
-            m=local_StochVar['p1']+2*local_StochVar['p2'] # 2x std as hardcoded default
-        elif info2=='cov':
-            m=local_StochVar['p1']/(1-2*local_StochVar['p2'])
-
-    # determine std for variable
-    if info2=='std':
-        s=local_StochVar['p2']
-    elif info2=='cov':
-        s=m*local_StochVar['p2']
-
-    # apply in standardized stochastic variable Dict
-    parDict={
-    'name':local_StochVar['X'],
-    'Dist':local_StochVar['type'],
-    'DIM':"",
-    'm':m,
-    's':s,
-    'info':''
-    }
-
-    return ParameterRealization_r(parDict,r)
-
-def MeanEval(local_StochVar):
-
-    # data
-    info1=local_StochVar['info1']
-    info2=local_StochVar['info2']
-
-    # determine mean value for variable
-    if info1=='mean':
-        return local_StochVar['p1']
-    elif info1=='char':
-        if info2=='std':
-            return local_StochVar['p1']+2*local_StochVar['p2'] # 2x std as hardcoded default
-        elif info2=='cov':
-            return local_StochVar['p1']/(1-2*local_StochVar['p2'])
-
-def GaussSampleScheme(L,n,nSim):
-
-    # initialize
-    scheme=pd.DataFrame(index=np.arange(1,nSim+1),columns=['j','l'])    
-
-    for l in np.arange(n+1):
-
-        if l==0:
-            scheme.loc[1,:]=[0,0] # starting entry as median value realization
-        else:
-            scheme.loc[2+4*(l-1):2+4*l-1,:]=[[1,l],[2,l],[4,l],[5,l]]    
-
-    return scheme
-
-def CalculationPoints(samplingScheme,GaussPoint_df):
-
-    modelInput=pd.DataFrame(index=np.arange(1,nSim+1),columns=GaussPoint_df.columns)
-
-    # initialize median values for all parameter realizations
-    for var in modelInput.columns:
-        modelInput[var]=GaussPoint_df.loc[3,var]
-
-    # correct on every line the single modified Gauss point
-    for i in modelInput.index:
-
-        # j,l realization
-        [j,l]=samplingScheme.loc[i,:]
-
-        # assignment
-        if l!=0: # 0-value corresponds with median point
-            modelInput.loc[i,l]=GaussPoint_df.loc[j,l]
-
-    return modelInput
 
 ##########
 ## CORE ##
@@ -165,14 +81,16 @@ r_realizations=r_realizations.flatten()
 # realizations per variable
 GaussPoint_df=pd.DataFrame(index=np.arange(1,L+1))
 StochVar=StochVar.transpose()
+varList=pd.Series()
 for var in StochVar.columns:
     local_StochVar=StochVar[var]
     samplepoints=SamplePointCalc(local_StochVar,r_realizations)
     GaussPoint_df[local_StochVar['number']]=samplepoints
+    varList.set_value(local_StochVar['number'],local_StochVar['X'])
 
 ## assign in sampling scheme ##
 samplingScheme=GaussSampleScheme(L,n,nSim)
-samples_modelInput=CalculationPoints(samplingScheme,GaussPoint_df)
+samples_modelInput=CalculationPoints(samplingScheme,GaussPoint_df,nSim)
 
 # add mean value realization if requested
 if SW_add_mean:
@@ -189,7 +107,10 @@ if SW_add_mean:
 ## print results ##
 ###################
 
-Print_DataFrame([samples_modelInput,samplingScheme],outdir+'/MDRMGauss_samples',['modelInput','samplingScheme'])
+reference=deepcopy(samples_modelInput)
+reference.columns=varList[reference.columns]
+
+Print_DataFrame([samples_modelInput,samplingScheme,reference],outdir+'/MDRMGauss_samples',['modelInput','samplingScheme','modelInput_named'])
 
 # file stochastic variable reference path for future reference
 

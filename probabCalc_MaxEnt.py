@@ -17,9 +17,9 @@ from PrintAuxiliary import Print_DataFrame
 # snippet from ProbabCalc2018
 #
 
-###############################
-## (TEMPORARY LOCAL SUPPORT) ##
-###############################
+##############
+## FUNCTION ##
+##############
 
 def ParameterRealization_r(varDict,rArray):
 
@@ -34,61 +34,84 @@ def ParameterRealization_r(varDict,rArray):
 	if DistType=='DET':
 		return np.ones(np.shape(rArray))*varDict['m']
 
+def SamplePointCalc(local_StochVar,r):
 
-##########
-## TEST ##
-##########
+    # data
+    info1=local_StochVar['info1']
+    info2=local_StochVar['info2']
 
-# # limit state
-# r,e1,e2=sy.symbols("r e1 e2")
-# g=r-e1*e2
+    # determine mean value for variable
+    if info1=='mean':
+        m=local_StochVar['p1']
+    elif info1=='char':
+        if info2=='std':
+            m=local_StochVar['p1']+2*local_StochVar['p2'] # 2x std as hardcoded default
+        elif info2=='cov':
+            m=local_StochVar['p1']/(1-2*local_StochVar['p2'])
 
-# # number of Monte Carlo
-# nsim=10
+    # determine std for variable
+    if info2=='std':
+        s=local_StochVar['p2']
+    elif info2=='cov':
+        s=m*local_StochVar['p2']
 
-# # ParameterDict
-# mr=20; sr=3
-# me1=3; se1=2
-# me2=5; se2=3
+    # apply in standardized stochastic variable Dict
+    parDict={
+    'name':local_StochVar['X'],
+    'Dist':local_StochVar['type'],
+    'DIM':"",
+    'm':m,
+    's':s,
+    'info':''
+    }
 
-# R={
-# 'name':'r',
-# 'Dist':'N',
-# 'DIM':"[N]",
-# 'm':mr,
-# 's':sr,
-# 'info':''
-# }
+    return ParameterRealization_r(parDict,r)
 
-# E1={
-# 'name':'e1',
-# 'Dist':'LN',
-# 'DIM':"[N]",
-# 'm':me1,
-# 's':se1,
-# 'info':''
-# }
+def MeanEval(local_StochVar):
 
-# E2={
-# 'name':'e2',
-# 'Dist':'G',
-# 'DIM':"[N]",
-# 'm':me2,
-# 's':se2,
-# 'info':''
-# }
+    # data
+    info1=local_StochVar['info1']
+    info2=local_StochVar['info2']
 
-# Dict={
-# 	'01':R,
-# 	'02':E1,
-# 	'03':E2
-# 	}
+    # determine mean value for variable
+    if info1=='mean':
+        return local_StochVar['p1']
+    elif info1=='char':
+        if info2=='std':
+            return local_StochVar['p1']+2*local_StochVar['p2'] # 2x std as hardcoded default
+        elif info2=='cov':
+            return local_StochVar['p1']/(1-2*local_StochVar['p2'])
 
-# # Z,dfX,dfr=MonteCarlo(g,Dict,nsim)
-# # Print_DataFrame([dfr,dfX],'TestOutput/test3var',['r','X'])
-# # print(dfr)
+def GaussSampleScheme(L,n,nSim):
 
-# [m,s]=Taylor(g,Dict)
+    # initialize
+    scheme=pd.DataFrame(index=np.arange(1,nSim+1),columns=['j','l'])    
 
+    for l in np.arange(n+1):
 
-# print(m,s)
+        if l==0:
+            scheme.loc[1,:]=[0,0] # starting entry as median value realization
+        else:
+            scheme.loc[2+4*(l-1):2+4*l-1,:]=[[1,l],[2,l],[4,l],[5,l]]    
+
+    return scheme
+
+def CalculationPoints(samplingScheme,GaussPoint_df,nSim):
+
+    modelInput=pd.DataFrame(index=np.arange(1,nSim+1),columns=GaussPoint_df.columns)
+
+    # initialize median values for all parameter realizations
+    for var in modelInput.columns:
+        modelInput[var]=GaussPoint_df.loc[3,var]
+
+    # correct on every line the single modified Gauss point
+    for i in modelInput.index:
+
+        # j,l realization
+        [j,l]=samplingScheme.loc[i,:]
+
+        # assignment
+        if l!=0: # 0-value corresponds with median point
+            modelInput.loc[i,l]=GaussPoint_df.loc[j,l]
+
+    return modelInput
