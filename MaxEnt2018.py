@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
     branch='alphaTest'
 
-    SW_Debug = False  # OMIT standard application and DO SPECIAL REQUEST at end of the file
+    SW_Debug = True  # OMIT standard application and DO SPECIAL REQUEST at end of the file
 
     SW_Gaussian = True  # function realizations Y(X) are based on Quadrature points for X... -- make sure to adapt filename etc accordingly
 
@@ -193,7 +193,7 @@ if __name__ == "__main__":
         print("\n## Debug zone ##\n")
 
 
-        # PhaseFive(mlist, number_best_phase5,targetfolder)
+        PhaseSix(targetfolder)
 
     ###############
     ### CLOSURE ###

@@ -9,6 +9,8 @@
 # CDF_PDF/
 # PhaseResults/
 # Samples/
+__pycache__/
 
 # track specific types of files
 !*.py
+*.pyc

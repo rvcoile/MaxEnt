@@ -42,8 +42,11 @@ def PhaseSix(reffolder):
     phase5file=folder+'/PhaseResults/PhaseFive.xlsx'
     # read file
     phase5=pd.read_excel(phase5file,'result')
+    phase5.index=np.arange(phase5.index.size) # correct for legacy numbering in PhaseFive.xlsx index
     # series of best optimization simulations
     simList=phase5['simnumber']
+
+    print(simList)
 
     ## READ CDF-PDF
     n=simList[0+simAdd]
