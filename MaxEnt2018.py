@@ -43,9 +43,9 @@ if __name__ == "__main__":
     ### SWITCHES ###
     ################
 
-    branch='alphaTest'
+    branch='MaxEnt2018'
 
-    SW_Debug = True  # OMIT standard application and DO SPECIAL REQUEST at end of the file
+    SW_Debug = False  # OMIT standard application and DO SPECIAL REQUEST at end of the file
 
     SW_Gaussian = True  # function realizations Y(X) are based on Quadrature points for X... -- make sure to adapt filename etc accordingly
 
@@ -63,9 +63,9 @@ if __name__ == "__main__":
     samples_rAlpha = 10 ** 3  # number of LHS samples Alpha - PHASE ONE - fixed Alpha values
 
 
-    xmax_default = 1000.  # # extremely import variable if you move away from the LN testcase
+    xmax_default = 250.  # # extremely import variable if you move away from the LN testcase
 
-    xmax_printing = 500.  # range for calc CDF and PDF -- must be a float!!!!
+    xmax_printing = 250.  # range for calc CDF and PDF -- must be a float!!!!
     x_deltaprint = 1.0
 
     ## Default values control parameters - no overwrite by user input
